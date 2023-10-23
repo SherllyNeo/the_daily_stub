@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #define MAX 10000
 #define INDEX_FILE "index.html"
@@ -73,7 +74,7 @@ int get_last_post_id(FILE* fp) {
 }
 
 int insert_at_line(char* file_name,int line_to_insert,char* text_to_insert) {
-    FILE* fp = fopen(file_name,"r");
+    FILE* fp = fopen(file_name,"rb");
     if (fp == NULL) {
         fprintf(stderr,"unable to open %s\n",file_name);
         exit(EXIT_FAILURE);
@@ -86,11 +87,17 @@ int insert_at_line(char* file_name,int line_to_insert,char* text_to_insert) {
     }
 
     int lines = 0;
-    int ch;
+    char ch;
     while(!feof(fp))
     {
         ch = fgetc(fp);
-        fprintf(tmp,"%c",ch);
+        if (
+                isalpha(ch) || isdigit(ch) || ch == '\n' || ch == '<' || ch == '>' || ch == '=' || ch == ' ' 
+                || ch == '\t' || ch == '"' || ch == ',' || ch == ';'
+                || ch == '.' || ch == '/'
+                ) {
+            fprintf(tmp,"%c",ch);
+        }
         if (lines == line_to_insert) {
             fprintf(tmp,"\n%s\n",text_to_insert);
             lines++;
@@ -111,11 +118,11 @@ int insert_at_line(char* file_name,int line_to_insert,char* text_to_insert) {
 
 int init_file(char* file_name) {
     char init_html[] = 
-    "<!DOCTYPE html>\n\t\n<html lang=\"en\">\n<head>\n\t<title>The Daily Stub</title> \
+    "<!DOCTYPE html>\n\t\n<html lang=\"en\">\n<head>\n\t\t<title>The Daily Stub</title> \
     \n\t\t<meta charset=\"UTF-8\"> \
     \n\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> \
     \n\t\t<link href=\"css/style.css\" rel=\"stylesheet\"> \
-    \n\t</head> \
+    \n</head> \
     \n\t<body>  \
     \n  \
     \n\t<h1>Welcome to the daily stub</h1>	\
@@ -129,7 +136,7 @@ int init_file(char* file_name) {
     \n\t</div>	\
 	\n\
    \n\t</body>	\
-   \n\t</html> ";
+   \n</html> ";
     FILE* fp = fopen(file_name,"w");
     if (fp == NULL) {
         fprintf(stderr,"unable to open %s\n",file_name);
