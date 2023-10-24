@@ -128,7 +128,7 @@ int init_file(char* file_name) {
     \n\t<h1>Welcome to the daily stub</h1>	\
     \n	\
     \n	\
-    \n\t<div id=\"post0\">	\
+    \n\t<div id=\"post0\" class=\"post\">	\
     \n\t\t<h2>Welcome to a daily stub post</h2>	\
         \n\t\t<p>	\
         \n\t\tI keep stubbing my toe everyday. Here is my story.	\
@@ -179,7 +179,7 @@ int main()
     printf("new post: %d to be inserted at line %d\n",new_post_id,line_to_insert_new_post);
 
     char new_post[MAX];
-    sprintf(new_post,"\t<div id=\"post%d\">\n\t\t<h2>Hey, this is a new post</h2>\n\t\t<p>I hurt mah toe</p>\n\t</div>",new_post_id);
+    sprintf(new_post,"\t<div id=\"post%d\" class=\"post\">\n\t\t<h2>Hey, this is a new post</h2>\n\t\t<p>I hurt mah toe</p>\n\t</div>\n\t<div class=\"spacer\"></div>\n",new_post_id);
     int result = insert_at_line(INDEX_FILE, line_to_insert_new_post, new_post);
 
     fclose(fp);
