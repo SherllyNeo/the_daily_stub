@@ -6,6 +6,11 @@
 #define MAX 10000
 #define INDEX_FILE "index.html"
 
+/* 
+ SIMPLE USAGE
+ ./poser title text_for_post
+ */
+
 int find_line_matching(FILE* fp,const char* line_to_find) {
     fseek(fp, 0, SEEK_SET);
     char ch;
@@ -148,7 +153,8 @@ int init_file(char* file_name) {
     return 0;
 }
 
-int main()
+
+int main(int argc, char *argv[])
 {
     printf("IMPORTANT NOTE: this expects the file to be in a specific format, please do not edit index.html without knowing this format or may make breaking changes\n");
 
@@ -179,7 +185,14 @@ int main()
     printf("new post: %d to be inserted at line %d\n",new_post_id,line_to_insert_new_post);
 
     char new_post[MAX];
-    sprintf(new_post,"\t<div id=\"post%d\" class=\"post\">\n\t\t<h2>Hey, this is a new post</h2>\n\t\t<p>I hurt mah toe</p>\n\t</div>\n\t<div class=\"spacer\"></div>\n",new_post_id);
+    char* title = "New post!";
+    char* post_text = "My toe nearly broke today, as did my spirit. I live on another day";
+    if (argc >= 2) {
+        title = argv[1];
+        post_text = argv[2];
+    }
+
+    sprintf(new_post,"\t<div id=\"post%d\" class=\"post\">\n\t\t<h2>%s</h2>\n\t\t<p>%s</p>\n\t</div>\n\t<div class=\"spacer\"></div>\n",new_post_id,title,post_text);
     int result = insert_at_line(INDEX_FILE, line_to_insert_new_post, new_post);
 
     fclose(fp);
