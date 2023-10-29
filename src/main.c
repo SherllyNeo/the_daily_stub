@@ -99,7 +99,7 @@ int insert_at_line(char* file_name,int line_to_insert,char* text_to_insert) {
         if (
                 isalpha(ch) || isdigit(ch) || ch == '\n' || ch == '<' || ch == '>' || ch == '=' || ch == ' ' 
                 || ch == '\t' || ch == '"' || ch == ',' || ch == ';'
-                || ch == '.' || ch == '/'
+                || ch == '.' || ch == '/' || ch == '-'
                 ) {
             fprintf(tmp,"%c",ch);
         }
